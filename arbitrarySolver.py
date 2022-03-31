@@ -3,7 +3,12 @@ from numpy import sqrt
 
 
 def createSquare(numEle, string):
-    """Creates the square we are going to be working with from the seed provided"""
+    """
+    Creates the square we are going to be working with from the seed provided
+    :param numEle: size of n
+    :param string: the seed for the puzzle
+    :return: the puzzle
+    """
     if len(string) != numEle * numEle:  # Sanity check
         print(len(seed))
         print('You fucked it!')
@@ -19,7 +24,11 @@ def createSquare(numEle, string):
 
 
 def createSeed(square):
-    """Gives the seed to a given matrix"""
+    """
+    Gives the seed to a given matrix
+    :param square: the current puzzle
+    :return: the seed of the puzzle
+    """
     string = ""
     for i in square:
         for j in i:
@@ -31,7 +40,12 @@ def createSeed(square):
 
 
 def initPossible(elements, square):
-    """Replace all the zeros with a list of the possible elements"""
+    """
+    Replace all the zeros with a list of the possible elements
+    :param elements: which elements we are using
+    :param square: the current puzzle
+    :return: -
+    """
     for i in range(len(elements)):
         for j in range(len(elements)):
             if square[i][j] == '0':
@@ -39,7 +53,12 @@ def initPossible(elements, square):
 
 
 def refinePossible(numEle, poss):
-    """The basic horizontal/vertical checks and the sub-square checks"""
+    """
+    The basic horizontal/vertical checks and the sub-square checks
+    :param numEle: size of n
+    :param poss: the current state of the puzzle
+    :return: -
+    """
     s = int(sqrt(numEle))
 
     for i in range(numEle):
@@ -62,7 +81,12 @@ def refinePossible(numEle, poss):
 
 
 def findSingles(numEle, poss):
-    """There are hot singles in your area! At least hopefully anyway._. Index all the len = 1 lists"""
+    """
+    There are hot singles in your area! At least hopefully anyway._. Index all the len = 1 lists
+    :param numEle: sie of n
+    :param poss: the current state of the puzzle
+    :return: the indices of the naked singles
+    """
     index = list()
     for i in range(numEle):
         for j in range(numEle):
@@ -74,7 +98,12 @@ def findSingles(numEle, poss):
 
 
 def checkSubSquares(elements, poss):
-    """"Checks to see if a number only has 1 valid place in a sub-square"""
+    """
+    Checks to see if a number only has 1 valid place in a sub-square
+    :param elements: which elements we are using
+    :param poss: the current state of the puzzle
+    :return: -
+    """
     s = int(sqrt(len(elements)))
     for i in range(s):
         for j in range(s):
@@ -94,7 +123,12 @@ def checkSubSquares(elements, poss):
 # From here on out the methods get a bit wackier!
 
 def inferredLines(elements, poss):
-    """Looks at two sub-squares and checks if some lines are unavailable due to their interplay"""
+    """
+    Looks at two sub-squares and checks if some lines are unavailable due to their interplay
+    :param elements: the elements we are using
+    :param poss: the current state of the puzzle
+    :return: -
+    """
     s = int(sqrt(len(elements)))
     for i in range(s):
         for j in range(s):
@@ -131,7 +165,13 @@ def inferredLines(elements, poss):
 
 
 def indexRefine(numEle, poss, index):
-    """Uses the aforementioned findSingles method's return to then reduce possibilities of affected squares"""
+    """
+    Uses the aforementioned findSingles method's return to then reduce possibilities of affected squares
+    :param numEle: size of n
+    :param poss: the current state of the puzzle
+    :param index: the positions of the singles
+    :return: -
+    """
     s = int(sqrt(numEle))
     for i in index:
         for k in range(numEle):
@@ -149,7 +189,13 @@ def indexRefine(numEle, poss, index):
 
 
 def valueSetter(numEle, poss, used=None):
-    """Sets values for each of the possibilities in each unknown square"""
+    """
+    Sets values for each of the possibilities in each unknown square
+    :param numEle: how big is n?
+    :param poss: the current state of the puzzle
+    :param used: which positions we have looked at before
+    :return: the highest value element in the puzzle
+    """
     if used is None:
         used = list()
 
@@ -184,7 +230,11 @@ def valueSetter(numEle, poss, used=None):
 
 
 def isSolved(poss):
-    """Checking if matrix is finished"""
+    """
+    Checking if matrix is finished
+    :param poss: the current state of the puzzle
+    :return: True for solved, False for not solved
+    """
     for i in poss:
         for j in i:
             if isinstance(j, list):
@@ -193,7 +243,12 @@ def isSolved(poss):
 
 
 def isSolvable(elements, poss):
-    """Checking if we are actually in a solvable position"""
+    """
+    Checking if we are actually in a solvable position
+    :param elements: elements we are using
+    :param poss: the current state of the puzzle
+    :return: True if puzzle is 'solvable', False otherwise
+    """
     s = int(sqrt(len(elements)))
     for i in poss:
         for j in i:
@@ -226,7 +281,13 @@ def isSolvable(elements, poss):
 
 
 def takeAGuess(elements, poss, l):
-    """Guesses a value based on which has the highest value"""
+    """
+    Guesses a value based on which has the highest value
+    :param elements: elements we are using
+    :param poss: the current state of the puzzle
+    :param l: the current layer
+    :return: -
+    """
     l += 1
     c = copy.deepcopy(poss)     # Make sure we have a copy of the step before
     used = list()
@@ -259,7 +320,12 @@ def takeAGuess(elements, poss, l):
 
 
 def solveMe(elements, seed):
-    """The standard code which attempts to solve a matrix without guesses"""
+    """
+    The standard code which attempts to solve a matrix without guesses
+    :param elements: the elements we are using
+    :param seed: the seed of the puzzle
+    :return: the 'seed' of the completed square
+    """
     p = createSquare(len(elements), seed)       # Initialise the square
     for q in p:
         print(q)
@@ -294,8 +360,10 @@ def solveMe(elements, seed):
         print(q)
     print(newSeed)
 
+    return newSeed
 
-elements = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
+
+elements = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G']     # Change these
 seed = "00AB000064030FC90040000000000000E10906000AD20800DC20G150BE00003A0DFE6A2050840001020000100060CEA0009C000E002B05843A50900B10E002F008600B09200503GC2EC057004000AD000BD10400090080509000EC0D08B621408F0000B602CG0A1300B0C3800050F0DG0000000000000B00G310D07F00009C60"
 
-solveMe(elements, seed)
+s = solveMe(elements, seed)
